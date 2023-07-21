@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 
+from exception import ExceptionHandler
+
 
 class MovableInterface(ABC):
     def __init__(self):
@@ -16,8 +18,9 @@ class Movable(MovableInterface):
         try:
             self.get_position[0] += self.get_velosity[0]
             self.get_position[1] += self.get_velosity[1]
-        except:
-            self.get_position = Exception('сдвинуть объект не возможно')
+        except Exception as e:
+            # self.get_position = Exception('сдвинуть объект не возможно')
+            ExceptionHandler.handle(e, self)
 
     def execute(self):
         self.set_position()
