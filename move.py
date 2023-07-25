@@ -15,11 +15,11 @@ class MovableInterface(ABC):
 
 class Movable(MovableInterface):
     def set_position(self):
-        try:
-            self.get_position[0] += self.get_velosity[0]
-            self.get_position[1] += self.get_velosity[1]
-        except Exception as e:
-            self.get_position = ExceptionHandler.handle(e, self)
+        self.get_position[0] += self.get_velosity[0]
+        self.get_position[1] += self.get_velosity[1]
 
     def execute(self):
-        self.set_position()
+        try:
+            self.set_position()
+        except Exception as e:
+            return ExceptionHandler.handle(e, self)

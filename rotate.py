@@ -16,12 +16,12 @@ class RotableInterface(ABC):
 
 class Rotable(RotableInterface):
     def set_direction(self):
-        try:
-            self.get_direction = (
-                (self.get_direction + self.get_angular_velocity) % self.get_directions_number
-            )
-        except Exception as e:
-            self.get_direction = ExceptionHandler.handle(e, self)
+        self.get_direction = (
+            (self.get_direction + self.get_angular_velocity) % self.get_directions_number
+        )
 
     def execute(self):
-        self.set_direction()
+        try:
+            self.set_direction()
+        except Exception as e:
+            return ExceptionHandler.handle(e, self)

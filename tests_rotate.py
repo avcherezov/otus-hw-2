@@ -32,10 +32,10 @@ def test_2():
             self.get_directions_number = self.get_property('directions_number')
 
     rotate = RotableAdapter(object)
-    rotate.execute()
+    error = rotate.execute()
 
-    assert isinstance(rotate.get_direction, Exception)
-    assert rotate.get_direction.args[0] == 'повернуть объект не возможно'
+    assert isinstance(error, Exception)
+    assert error.args[0] == 'повернуть объект не возможно'
 
 
 def test_3():
@@ -47,7 +47,7 @@ def test_3():
             self.get_directions_number = self.get_property('directions_number')
 
     rotate = RotableAdapter(object)
-    rotate.execute()
+    error = rotate.execute()
 
-    assert isinstance(rotate.get_direction, Exception)
-    assert rotate.get_direction.args[0] == 'повернуть объект не возможно'
+    assert isinstance(error, Exception)
+    assert error.args[0] == 'повернуть объект не возможно'

@@ -29,10 +29,10 @@ def test_2():
             self.get_velosity = self.get_property('velosity')
 
     move = MovableAdapter(object)
-    move.execute()
+    error = move.execute()
 
-    assert isinstance(move.get_position, Exception)
-    assert move.get_position.args[0] == 'сдвинуть объект не возможно'
+    assert isinstance(error, Exception)
+    assert error.args[0] == 'сдвинуть объект не возможно'
 
 
 def test_3():
@@ -43,10 +43,10 @@ def test_3():
             self.get_velosity = None
 
     move = MovableAdapter(object)
-    move.execute()
+    error = move.execute()
 
-    assert isinstance(move.get_position, Exception)
-    assert move.get_position.args[0] == 'сдвинуть объект не возможно'
+    assert isinstance(error, Exception)
+    assert error.args[0] == 'сдвинуть объект не возможно'
 
 
 def test_4():
