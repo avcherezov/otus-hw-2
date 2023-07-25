@@ -1,6 +1,9 @@
 ERRORS = {
     'MovableAdapter': {
         'TypeError': 'сдвинуть объект не возможно'
+    },
+    'RotableAdapter': {
+        'TypeError': 'повернуть объект не возможно'
     }
 }
 
@@ -13,4 +16,4 @@ class ExceptionHandler:
         command = c.__class__.__name__
         exception = e.__class__.__name__
 
-        raise Exception(clt.errors[command][exception])
+        return Exception(clt.errors[command][exception])

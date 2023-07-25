@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 
+from exception import ExceptionHandler
+
 
 class RotableInterface(ABC):
     def __init__(self):
@@ -18,8 +20,8 @@ class Rotable(RotableInterface):
             self.get_direction = (
                 (self.get_direction + self.get_angular_velocity) % self.get_directions_number
             )
-        except:
-            self.get_direction = Exception('повернуть объект не возможно')
+        except Exception as e:
+            self.get_direction = ExceptionHandler.handle(e, self)
 
     def execute(self):
         self.set_direction()

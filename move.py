@@ -19,8 +19,7 @@ class Movable(MovableInterface):
             self.get_position[0] += self.get_velosity[0]
             self.get_position[1] += self.get_velosity[1]
         except Exception as e:
-            # self.get_position = Exception('сдвинуть объект не возможно')
-            ExceptionHandler.handle(e, self)
+            self.get_position = ExceptionHandler.handle(e, self)
 
     def execute(self):
         self.set_position()
