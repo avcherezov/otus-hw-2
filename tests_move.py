@@ -1,5 +1,6 @@
 from move import Movable
 from object import UObject
+from exception import MoveErrorException
 
 
 object = {
@@ -29,10 +30,10 @@ def test_2():
             self.get_velosity = self.get_property('velosity')
 
     move = MovableAdapter(object)
-    move.execute()
+    error = move.execute()
 
-    assert isinstance(move.get_position, Exception)
-    assert move.get_position.args[0] == 'сдвинуть объект не возможно'
+    assert isinstance(error, Exception)
+    assert error.__str__() == 'сдвинуть объект не возможно'
 
 
 def test_3():
@@ -43,10 +44,10 @@ def test_3():
             self.get_velosity = None
 
     move = MovableAdapter(object)
-    move.execute()
+    error = move.execute()
 
-    assert isinstance(move.get_position, Exception)
-    assert move.get_position.args[0] == 'сдвинуть объект не возможно'
+    assert isinstance(error, Exception)
+    assert error.__str__() == 'сдвинуть объект не возможно'
 
 
 def test_4():
@@ -57,10 +58,10 @@ def test_4():
             self.get_velosity = self.get_property('velosity')
 
         def set_position(self):
-            self.get_position = Exception('сдвинуть объект не возможно')
+            self.get_position = MoveErrorException()
 
     move = MovableAdapter(object)
     move.execute()
 
     assert isinstance(move.get_position, Exception)
-    assert move.get_position.args[0] == 'сдвинуть объект не возможно'
+    assert move.get_position.__str__() == 'сдвинуть объект не возможно'
