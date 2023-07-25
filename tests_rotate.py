@@ -35,7 +35,7 @@ def test_2():
     error = rotate.execute()
 
     assert isinstance(error, Exception)
-    assert error.args[0] == 'повернуть объект не возможно'
+    assert error.__str__() == 'повернуть объект не возможно'
 
 
 def test_3():
@@ -50,4 +50,4 @@ def test_3():
     error = rotate.execute()
 
     assert isinstance(error, Exception)
-    assert error.args[0] == 'повернуть объект не возможно'
+    assert error.__str__() == 'повернуть объект не возможно'

@@ -4,4 +4,4 @@ class Logger:
 
     def log(self, error):
         with open(self.file, "a") as file:
-            file.write(f'Ошибка - {error.args[0]}\n')
+            file.write(f'Ошибка - {error.__str__()}\n')

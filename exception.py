@@ -1,9 +1,19 @@
+class MoveErrorException(Exception):
+    def __str__(self):
+        return "сдвинуть объект не возможно"
+
+
+class RotateErrorException(Exception):
+    def __str__(self):
+        return "повернуть объект не возможно"
+
+
 ERRORS = {
     'MovableAdapter': {
-        'TypeError': 'сдвинуть объект не возможно'
+        'TypeError': MoveErrorException()
     },
     'RotableAdapter': {
-        'TypeError': 'повернуть объект не возможно'
+        'TypeError': RotateErrorException()
     }
 }
 
@@ -16,4 +26,4 @@ class ExceptionHandler:
         command = c.__class__.__name__
         exception = e.__class__.__name__
 
-        return Exception(clt.errors[command][exception])
+        return clt.errors[command][exception]
