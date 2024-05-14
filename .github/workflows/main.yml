@@ -23,3 +23,4 @@ jobs:
       run: |
         pytest tests_move.py
         pytest tests_rotate.py
+        pytest tests_exception.py

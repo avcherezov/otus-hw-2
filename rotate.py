@@ -1,5 +1,8 @@
 from abc import ABC, abstractmethod
 
+from exception import ExceptionHandler
+from command import ICommand
+
 
 class RotableInterface(ABC):
     def __init__(self):
@@ -12,14 +15,14 @@ class RotableInterface(ABC):
         pass
 
 
-class Rotable(RotableInterface):
+class Rotable(ICommand, RotableInterface):
     def set_direction(self):
-        try:
-            self.get_direction = (
-                (self.get_direction + self.get_angular_velocity) % self.get_directions_number
-            )
-        except:
-            self.get_direction = Exception('повернуть объект не возможно')
+        self.get_direction = (
+            (self.get_direction + self.get_angular_velocity) % self.get_directions_number
+        )
 
     def execute(self):
-        self.set_direction()
+        try:
+            self.set_direction()
+        except Exception as e:
+            return ExceptionHandler.handle(e, self)
