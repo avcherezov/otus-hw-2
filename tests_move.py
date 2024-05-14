@@ -1,7 +1,14 @@
 from move import Movable
 from object import UObject
-from exception import MoveErrorException
+from exception import MoveErrorException, ExceptionHandler
 
+
+ERRORS = {
+    'MovableAdapter': {
+        'TypeError': MoveErrorException
+    },
+}
+ExceptionHandler.errors = ERRORS
 
 object = {
     'position': [12, 5],
@@ -61,7 +68,7 @@ def test_4():
             self.get_position = MoveErrorException()
 
     move = MovableAdapter(object)
-    move.execute()
+    error = move.execute()
 
-    assert isinstance(move.get_position, Exception)
-    assert move.get_position.__str__() == 'сдвинуть объект не возможно'
+    assert isinstance(error, Exception)
+    assert error.__str__() == 'сдвинуть объект не возможно'

@@ -1,7 +1,16 @@
-class Logger:
-    def __init__(self, log_file='log.txt'):
-        self.file = log_file
+import logging
 
-    def log(self, error):
-        with open(self.file, "a") as file:
-            file.write(f'Ошибка - {error.__str__()}\n')
+
+class Logger:
+    logger = logging.getLogger('server_logger')
+    logger.setLevel(logging.DEBUG)
+    handler = logging.FileHandler('log.log')
+    handler.setLevel(logging.DEBUG)
+    log_formatter = logging.Formatter('%(asctime)s - %(name)s'
+                                      ' - %(levelname)-8s - %(message)s')
+    handler.setFormatter(log_formatter)
+    logger.addHandler(handler)
+
+    @classmethod
+    def log(cls, msg):
+        cls.logger.info(msg=msg)

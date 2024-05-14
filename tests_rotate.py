@@ -1,5 +1,14 @@
 from rotate import Rotable
 from object import UObject
+from exception import RotateErrorException, ExceptionHandler
+
+
+ERRORS = {
+    'RotableAdapter': {
+        'TypeError': RotateErrorException
+    },
+}
+ExceptionHandler.errors = ERRORS
 
 
 object = {

@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
 from exception import ExceptionHandler
+from command import ICommand
 
 
 class RotableInterface(ABC):
@@ -14,7 +15,7 @@ class RotableInterface(ABC):
         pass
 
 
-class Rotable(RotableInterface):
+class Rotable(ICommand, RotableInterface):
     def set_direction(self):
         self.get_direction = (
             (self.get_direction + self.get_angular_velocity) % self.get_directions_number

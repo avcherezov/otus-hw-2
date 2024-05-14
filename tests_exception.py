@@ -2,14 +2,20 @@ import os
 
 from move import Movable
 from object import UObject
-from command import Command, Command2
+from event_loop import EventLoop
+from exception import RepeatCommand, DoubleRepeatCommand, ExceptionLogger, ExceptionHandler
 
 import pytest
 
 
-@pytest.fixture
+@pytest.fixture(autouse=True)
+def clear_event_loop():
+    EventLoop.clear()
+
+
+@pytest.fixture(scope='session', autouse=True)
 def delete_log():
-    pytest.log_file = 'test.txt'
+    pytest.log_file = 'log.log'
     yield
     os.remove(pytest.log_file)
 
@@ -27,33 +33,60 @@ class MovableAdapter(Movable, UObject):
         self.get_velosity = self.get_property('velosity')
 
 
-def test_1(delete_log):
-    error = 'Ошибка - сдвинуть объект не возможно\n'
+def test_1():
+    ERRORS = {
+        'MovableAdapter': {
+            'TypeError': RepeatCommand
+        },
+        'RepeatCommand': {
+            'TypeError': ExceptionLogger
+        }
+    }
+    ExceptionHandler.errors = ERRORS
 
     move = MovableAdapter(object)
-    array_command = [move]
-    command = Command(pytest.log_file)
-    command.run_command(array_command)
+    EventLoop.put(move)
+    first_command = EventLoop.get().execute()
+    assert type(first_command).__name__ == 'RepeatCommand'
 
+    EventLoop.put(first_command)
+    repeat_first_command = EventLoop.get().execute(first_command.command)
+    assert type(repeat_first_command).__name__ == 'ExceptionLogger'
+
+    EventLoop.put(repeat_first_command)
+    EventLoop.get().execute()
     file_list = os.listdir()
     assert pytest.log_file in file_list
 
-    with open(pytest.log_file, "r") as f:
-        text = f.read()
-    assert text in error
 
-
-def test_2(delete_log):
-    error = 'Ошибка - сдвинуть объект не возможно\n'
+def test_2():
+    ERRORS = {
+        'MovableAdapter': {
+            'TypeError': RepeatCommand
+        },
+        'RepeatCommand': {
+            'TypeError': DoubleRepeatCommand
+        },
+        'DoubleRepeatCommand': {
+            'TypeError': ExceptionLogger
+        }
+    }
+    ExceptionHandler.errors = ERRORS
 
     move = MovableAdapter(object)
-    array_command = [move]
-    command = Command2(pytest.log_file)
-    command.run_command(array_command)
+    EventLoop.put(move)
+    first_command = EventLoop.get().execute()
+    assert type(first_command).__name__ == 'RepeatCommand'
 
+    EventLoop.put(first_command)
+    repeat_first_command = EventLoop.get().execute(first_command.command)
+    assert type(repeat_first_command).__name__ == 'DoubleRepeatCommand'
+
+    EventLoop.put(repeat_first_command)
+    double_repeat_first_command = EventLoop.get().execute(first_command.command)
+    assert type(double_repeat_first_command).__name__ == 'ExceptionLogger'
+
+    EventLoop.put(double_repeat_first_command)
+    EventLoop.get().execute()
     file_list = os.listdir()
     assert pytest.log_file in file_list
-
-    with open(pytest.log_file, "r") as f:
-        text = f.read()
-    assert text in error
