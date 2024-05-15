@@ -42,6 +42,15 @@ class RotateErrorException(Exception):
         return "повернуть объект не возможно"
 
 
+class FuelErrorException(Exception):
+    def __init__(self, obj):
+        self.command = obj.get_property("command")
+        self.exception_type = obj.get_property("exception_type")
+
+    def __str__(self):
+        return "проблема с топливом"
+
+
 class ExceptionHandler:
     errors = None
 

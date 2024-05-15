@@ -24,3 +24,5 @@ jobs:
         pytest tests_move.py
         pytest tests_rotate.py
         pytest tests_exception.py
+        pytest tests_fuel.py
+        pytest tests_macro.py
